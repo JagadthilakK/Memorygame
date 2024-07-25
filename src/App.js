@@ -72,6 +72,8 @@ export const App = () => {
 
   const appClassName = useNumbers ? 'App numbers-background' : 'App images-background'; // backgrouund condition
 
+  console.log()
+
   return (
     <div className={appClassName}>
       <div className='header'>
