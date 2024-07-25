@@ -3,7 +3,7 @@ import '../Stylesheet/Card.css';
 
 export const Card=({index,card,isFlipped,onFlip,useNumbers})=>{
 return(
-  <div className={`card ${isFlipped ? 'flipped' : ''}`} onClick={onFlip}>
+  <div className={`card ${isFlipped ? 'flipped' : ''}`} onClick={()=>onFlip(index)}>
   <div className="card-front">
     {useNumbers ? (
       <div className="number">{card.id}</div>

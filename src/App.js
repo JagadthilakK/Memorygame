@@ -19,7 +19,7 @@ const initialImages = [
 
 const initialNumbers = [{id:"1"},{id:"2"},{id:"3"},{id:"4"},{id:"5"},{id:"6"},{id:"7"},{id:"8"},{id:"9"},{id:"0"},];
 
-const shuffleArray = (array) => {
+const shuffleArray = (array) => { // shuffles the array
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]]
@@ -28,14 +28,12 @@ const shuffleArray = (array) => {
 }
 
 export const App = () => {
-  const [cards, setCards] = useState([]);
-  const [flippedCards, setFlippedCards] = useState([]);
-  const [matchedCards, setMatchedCards] = useState([]);
-  const [useNumbers, setUseNumbers] = useState(false);
+  const [cards, setCards] = useState([]); // set cards to get displayed
+  const [flippedCards, setFlippedCards] = useState([]); // flipcard take two value to compare
+  const [matchedCards, setMatchedCards] = useState([]); // to store matched cards
+  const [useNumbers, setUseNumbers] = useState(false); // to change cards game from images to number and vise versa
 
-  console.log(flippedCards,"Matche",matchedCards)
-
-  const initializeGame = useCallback(() => {
+  const initializeGame = useCallback(() => { // used to memozise this funtion ie it wont re render when a state is updated 
     const initialSet = useNumbers ? initialNumbers : initialImages;
     const shuffledCards = shuffleArray([...initialSet, ...initialSet]);
     setCards(shuffledCards);
@@ -43,36 +41,36 @@ export const App = () => {
     setMatchedCards([]);
   }, [useNumbers]);
 
-  useEffect(() => {
+  useEffect(() => { // calls only once when the component is mounted and when useNumbers is changed
     initializeGame();
   }, [initializeGame]);
 
   const handleFlip = (index) => {
-    if (flippedCards.length === 2 || flippedCards.includes(index)) return;
+    if (flippedCards.length === 2 || flippedCards.includes(index)) return; // prevents flipping more than two card at same time or same card get flipped twice
 
     const newFlippedCards = [...flippedCards, index];
     setFlippedCards(newFlippedCards);
 
     if (newFlippedCards.length === 2) {
-      const [firstIndex, secondIndex] = newFlippedCards;
-      if (cards[firstIndex] === cards[secondIndex]) {
+      const [firstIndex, secondIndex] = newFlippedCards; // array destructure 
+      if (cards[firstIndex] === cards[secondIndex]) {  // check the index values are equal 
         setMatchedCards([...matchedCards, firstIndex, secondIndex]);
       }
-      setTimeout(() => setFlippedCards([]), 1000);
+      setTimeout(() => setFlippedCards([]), 1000); // flips the card back in 1 sec
     }
   };
 
   const handleSwitch = () => {
-    setUseNumbers((prevUseNumbers) => !prevUseNumbers);
+    setUseNumbers((prevUseNumbers) => !prevUseNumbers); // to change game mode
   };
 
   const handlePlayAgain = () => {
-    initializeGame();
+    initializeGame(); //play again fun
   };
 
-  const allMatched = matchedCards.length === cards.length;
+  const allMatched = matchedCards.length === cards.length; // play agian button condition
 
-  const appClassName = useNumbers ? 'App numbers-background' : 'App images-background';
+  const appClassName = useNumbers ? 'App numbers-background' : 'App images-background'; // backgrouund condition
 
   return (
     <div className={appClassName}>
